@@ -1,0 +1,50 @@
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.buildlog/
+.history
+.svn/
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+#.vscode/
+datasets/
+android_app/build/
+
+# Flutter/Dart/Pub related
+android_app/**/doc/api/
+android_app/**/ios/Flutter/.last_build_id
+android_app/.dart_tool/
+android_app/.flutter-plugins
+android_app/.flutter-plugins-dependencies
+android_app/.packages
+android_app/.pub-cache/
+android_app/.pub/
+android_app/**/doc/api/
+android_app/**/ios/Flutter/.last_build_id
+android_app/.dart_tool/
+android_app/.flutter-plugins
+android_app/.flutter-plugins-dependencies
+android_app/.packages
+android_app/.pub-cache/
+android_app/.pub/
+android_app/android/app/debug
+android_app/android/app/profile
+android_app/android/app/release
+
+# Web related
+android_app/lib/generated_plugin_registrant.dart
+
+# Symbolication related
+android_app/app.*.symbols
+
+# Obfuscation related
+android_app/app.*.map.json
