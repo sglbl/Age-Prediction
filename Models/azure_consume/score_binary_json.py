@@ -106,14 +106,6 @@ def run(request):
             print("Exception occured in files['image'].read(): ", e)
             exc_occured = True
     
-    if exc_occured:
-        try:
-            image_data = file_bytes
-            preds = model.predict(image_data)
-        except Exception as e:
-            print("Exception occured in image_data=file_btyes: ", e)
-            exc_occured = True
-    
     # preds = model.predict(image_data)
     dumped_preds = json.dumps({"preds": preds}, default=int32_to_int)
     return AMLResponse(dumped_preds, 200)

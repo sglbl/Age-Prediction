@@ -41,6 +41,7 @@ dependencies:
   path_provider: ^2.0.11
   path:
   tuple:
+  image:
 
 dev_dependencies:
   flutter_test:

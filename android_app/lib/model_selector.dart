@@ -13,12 +13,12 @@ class ModelSelector extends StatefulWidget {
 }
 
 class _SelectmodelState extends State<ModelSelector> {
-  List<String> model_items = ['model 1', 'model 2', 'model 3'];
+  List<String> model_items = ['age_model_a', 'age_model_b', 'age_model_c'];
 
-  List<String> epoch_values = ['50', '500', '1000'];
+  List<String> epoch_values = ['20', '500', '1000'];
 
-  String model_value = 'model 1';
-  String epoch_value = '50';
+  String model_value = 'age_model_a';
+  String epoch_value = '20';
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +65,6 @@ class _SelectmodelState extends State<ModelSelector> {
               SizedBox(
                 height: 40,
               ),
-              /*
               SizedBox(
                 width: 240,
                 child: DropdownButtonHideUnderline(
@@ -92,7 +91,7 @@ class _SelectmodelState extends State<ModelSelector> {
               ),
               SizedBox(
                 height: 40,
-              ),*/
+              ),
               TextButton(
                 onPressed: () {
                   _navigateToImageGetterPage(context, model_value, epoch_value);
@@ -119,5 +118,5 @@ class _SelectmodelState extends State<ModelSelector> {
 // }
 
 void _navigateToImageGetterPage(BuildContext context, String modelValue, epochValue) {
-  Navigator.of(context).push(MaterialPageRoute(builder: (context) => ImageGetterWidget(modelValue, epochValue)));
+  Navigator.of(context).push(MaterialPageRoute(builder: (context) => ImageGetterWidget(model: modelValue, epoch: epochValue)));
 }

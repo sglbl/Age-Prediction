@@ -52,7 +52,7 @@ body = str.encode(json_data)
 files=[
     # ('image',('file', preprocess('dede.jpg') ,'image/jpg'))
     # ('image',('file', preprocess('dede.jpg') ,'image/jpg'))
-  ('image', ('file', encoder('dede.jpg'), 'application/octet-stream'))
+  ('image', ('file', encoded_to_string_to_json(encoder('dede.jpg')), 'application/octet-stream'))
 ]
 
 print(type(files))
@@ -71,7 +71,7 @@ if not api_key:
 
 # The azureml-model-deployment header will force the request to go to a specific deployment.
 # Remove this header to have the request observe the endpoint traffic rules
-headers = {'Content-Type':'application/json', 'Authorization':('Bearer '+ api_key), 'azureml-model-deployment': 'dep-try10' }
+headers = {'Content-Type':'application/json', 'Authorization':('Bearer '+ api_key), 'azureml-model-deployment': 'dep-try13' }
 
 req = urllib.request.Request(url, body, headers)
 

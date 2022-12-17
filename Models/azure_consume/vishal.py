@@ -54,7 +54,7 @@ files=[
 headers = {
   'Authorization': 'Bearer 54rcDiIWtOGoZHrpe84qbsBKj5zcjT6E',
   'Content-Type':'application/json', 
-  'azureml-model-deployment': 'ep-try10' 
+  'azureml-model-deployment': 'dep-try13' 
 }
 
 response = requests.request("POST", url, headers=headers, files=files)
