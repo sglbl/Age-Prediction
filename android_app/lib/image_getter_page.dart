@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:flutter_native_image/flutter_native_image.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ext_storage/ext_storage.dart';
 import 'package:image/image.dart' as img_pack;
@@ -179,7 +180,11 @@ class _ImageGetterState extends State<ImageGetterWidget> {
   }
 
   Future<String> convertFileToImage(File picture) async {
-    List<int> imageBytes = picture.readAsBytesSync();
+    File compressedPicture = await FlutterNativeImage.compressImage(storedImageOnRoot.path, quality: 50, percentage: 80);
+    List<int> imageBytes = compressedPicture.readAsBytesSync();
+    // List<int> imageBytes = picture.readAsBytesSync();
+    // String base64Image = base64.encode(imageBytes);
+
     String base64Image = base64.encode(imageBytes);
     return base64Image;
   }
@@ -197,7 +202,7 @@ class _ImageGetterState extends State<ImageGetterWidget> {
     var response =
         await http.post(Uri.https('agepredictor2.azurewebsites.net', '/api/HttpTrigger1'), body: body, headers: {"x-functions-key": secretKey});
 
-    log(response.body.toString());
+    log("Response from model: ${response.body}");
     return response.body.toString();
   }
 

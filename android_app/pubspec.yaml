@@ -42,6 +42,7 @@ dependencies:
   path:
   tuple:
   image:
+  flutter_native_image: ^0.0.6
 
 dev_dependencies:
   flutter_test:

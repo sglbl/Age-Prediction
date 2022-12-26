@@ -15,8 +15,8 @@
 *.iws
 .idea/
 
-#.vscode/
 datasets/
+Models/
 android_app/build/
 
 # Flutter/Dart/Pub related
