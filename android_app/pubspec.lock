@@ -81,14 +81,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.5"
-  ext_storage:
+  external_path:
     dependency: "direct main"
     description:
-      path: "."
-      ref: HEAD
-      resolved-ref: "98faf095ed6786a0bb0db26cb2f3966513f3f7aa"
-      url: "https://github.com/GitJournal/ext_storage.git"
-    source: git
+      name: external_path
+      sha256: "2095c626fbbefe70d5a4afc9b1137172a68ee2c276e51c3c1283394485bea8f4"
+      url: "https://pub.dev"
+    source: hosted
     version: "1.0.3"
   fake_async:
     dependency: transitive

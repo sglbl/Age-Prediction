@@ -29,9 +29,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  ext_storage:
-    git:
-      url: https://github.com/GitJournal/ext_storage.git
   image_picker: 
   cupertino_icons: ^1.0.2
   url_launcher: 
@@ -43,6 +40,10 @@ dependencies:
   tuple:
   image:
   flutter_native_image: ^0.0.6
+  external_path: ^1.0.3
+  # ext_storage:
+  #   git:
+  #     url: https://github.com/GitJournal/ext_storage.git
 
 dev_dependencies:
   flutter_test:

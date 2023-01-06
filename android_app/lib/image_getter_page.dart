@@ -4,11 +4,12 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_image/flutter_native_image.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:ext_storage/ext_storage.dart';
 import 'package:image/image.dart' as img_pack;
 import 'package:path/path.dart' as path;
 import 'package:http/http.dart' as http;
 import 'package:tuple/tuple.dart';
+import 'package:external_path/external_path.dart';
+// import 'package:ext_storage/ext_storage.dart';
 
 class ImageGetterWidget extends StatefulWidget {
   late String model = 'Model 1';
@@ -40,7 +41,7 @@ class _ImageGetterState extends State<ImageGetterWidget> {
 
   List<String> incomeResults = ['116.00', '208.01', '372.00, 372.00, 58.00'];
   List<int> incomeResultsInt = [100, 0, 0, 0, 10];
-  String secretKey = "EoMowN0V-Ix-SOIX5Xlm83wdqSbQWQvFQTTAw9VMnkxIAzFuxD_v1w=="; // Secret key from Azure
+  String secretKey = "eYw6HywLbFXu4PBLDIVZsbKzdgKALxI1AvPuptiDtgQbAzFuRsMLCw=="; // Secret key from Azure
   // website: https://agepredictor2.azurewebsites.net/api/HttpTrigger1?code=EoMowN0V-Ix-SOIX5Xlm83wdqSbQWQvFQTTAw9VMnkxIAzFuxD_v1w==
 
   _ImageGetterState(String model, String epoch) {
@@ -76,7 +77,7 @@ class _ImageGetterState extends State<ImageGetterWidget> {
                       log("Image sizes2: ${Image.file(storedImageOnRoot, width: 400).height} ${Image.file(storedImageOnRoot, width: 400).width}");
 
                       final fileName = path.basename(storedImageOnRoot.path);
-                      var extPath = await ExtStorage.getExternalStoragePublicDirectory(ExtStorage.DIRECTORY_DOWNLOADS);
+                      var extPath = await ExternalPath.getExternalStoragePublicDirectory(ExternalPath.DIRECTORY_DOWNLOADS);
                       await storedImageOnRoot.copy('$extPath/$fileName');
                       log("Root path $storedImageOnRoot \nExt Fath File: '$extPath/$fileName");
                       // log("Size width: ${storedImageOnRoot.width} height: ${storedImageOnRoot.height}"),
@@ -98,7 +99,8 @@ class _ImageGetterState extends State<ImageGetterWidget> {
                       imageHeight = image?.height;
 
                       final fileName = path.basename(storedImageOnRoot.path);
-                      var extPath = await ExtStorage.getExternalStoragePublicDirectory(ExtStorage.DIRECTORY_DOWNLOADS);
+                      var extPath = await ExternalPath.getExternalStoragePublicDirectory(ExternalPath.DIRECTORY_DOWNLOADS);
+                      // var extPath = await ExtStorage.getExternalStoragePublicDirectory(ExtStorage.DIRECTORY_DOWNLOADS);
                       /* final File localImage = */ await storedImageOnRoot.copy('$extPath/$fileName');
                       log("Root path $storedImageOnRoot \nExt Fath File: '$extPath/$fileName");
                       setState(() {
@@ -200,7 +202,7 @@ class _ImageGetterState extends State<ImageGetterWidget> {
     var body = jsonEncode(jsonCode);
 
     var response =
-        await http.post(Uri.https('agepredictor2.azurewebsites.net', '/api/HttpTrigger1'), body: body, headers: {"x-functions-key": secretKey});
+        await http.post(Uri.https('agepredictorwin2.azurewebsites.net', '/api/HttpTrigger1'), body: body, headers: {"x-functions-key": secretKey});
 
     log("Response from model: ${response.body}");
     return response.body.toString();
