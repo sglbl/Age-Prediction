@@ -16,7 +16,7 @@
 .idea/
 
 datasets/
-Models/
+models/
 android_app/build/
 
 # Flutter/Dart/Pub related
