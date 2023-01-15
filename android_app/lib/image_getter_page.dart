@@ -78,7 +78,7 @@ class _ImageGetterState extends State<ImageGetterWidget> {
 
                       final fileName = path.basename(storedImageOnRoot.path);
                       var extPath = await ExternalPath.getExternalStoragePublicDirectory(ExternalPath.DIRECTORY_DOWNLOADS);
-                      await storedImageOnRoot.copy('$extPath/$fileName');
+                      // await storedImageOnRoot.copy('$extPath/$fileName');
                       log("Root path $storedImageOnRoot \nExt Fath File: '$extPath/$fileName");
                       // log("Size width: ${storedImageOnRoot.width} height: ${storedImageOnRoot.height}"),
                       setState(() {
@@ -182,10 +182,8 @@ class _ImageGetterState extends State<ImageGetterWidget> {
   }
 
   Future<String> convertFileToImage(File picture) async {
-    File compressedPicture = await FlutterNativeImage.compressImage(storedImageOnRoot.path, quality: 50, percentage: 80);
-    List<int> imageBytes = compressedPicture.readAsBytesSync();
-    // List<int> imageBytes = picture.readAsBytesSync();
-    // String base64Image = base64.encode(imageBytes);
+    // File picture = await FlutterNativeImage.compressImage(storedImageOnRoot.path, quality: 100, percentage: 30);
+    List<int> imageBytes = picture.readAsBytesSync();
 
     String base64Image = base64.encode(imageBytes);
     return base64Image;
@@ -201,8 +199,11 @@ class _ImageGetterState extends State<ImageGetterWidget> {
     // log("First 100 char of json: ${jsonEncode(jsonCode).substring(0, 100)}");
     var body = jsonEncode(jsonCode);
 
-    var response =
-        await http.post(Uri.https('agepredictorwin2.azurewebsites.net', '/api/HttpTrigger1'), body: body, headers: {"x-functions-key": secretKey});
+    var response = await http.post(Uri.parse("http://192.168.43.136:7072/api/HttpTrigger1"),
+        // Uri.parse("http://172.16.92.156:7072/api/HttpTrigger1"),
+        body: body,
+        headers: {"x-functions-key": secretKey});
+    // await http.post(Uri.https('agepredictorwin2.azurewebsites.net', '/api/HttpTrigger1'), body: body, headers: {"x-functions-key": secretKey});
 
     log("Response from model: ${response.body}");
     return response.body.toString();
@@ -215,6 +216,16 @@ class _ImageGetterState extends State<ImageGetterWidget> {
     double y = incomeResultsInt[1] * 400 / imageHeight;
     double w = incomeResultsInt[2] * 400 / imageWidth;
     double h = incomeResultsInt[3] * 400 / imageHeight;
+
+    // double x = incomeResultsInt[0] * 1.0;
+    // double y = incomeResultsInt[1] * 1.0;
+    // double w = incomeResultsInt[2] * 1.0;
+    // double h = incomeResultsInt[3] * 1.0;
+
+    // double x = incomeResultsInt[0] * 3 / 10;
+    // double y = incomeResultsInt[1] * 3 / 10;
+    // double w = incomeResultsInt[2] * 3 / 10;
+    // double h = incomeResultsInt[3] * 3 / 10;
 
     var drawInfo = Tuple2<Rect, int>(Rect.fromLTWH(x, y, w - x, h), incomeResultsInt[4]);
 

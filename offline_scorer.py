@@ -14,17 +14,34 @@ class InferenceModel():
         # Load the model from the path
         self.model = tf.keras.models.load_model(model_path)
  
+    #def abs(a):
+     #   return 1
  
     def face_border_detector(self, image):
         # get xml from repo
         face_cascade = cv.CascadeClassifier('models/haarcascade_frontalface_default.xml')
+        face_cascade2 = cv.CascadeClassifier('models/haarcascade_frontalface_alt.xml')
+        face_cascade3 = cv.CascadeClassifier('models/haarcascade_frontalface_alt2.xml')
+        face_cascade4 = cv.CascadeClassifier('models/haarcascade_frontalface_alt_tree.xml')
+
         gray = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
         faces = face_cascade.detectMultiScale(gray, 1.1, 4)
         biggest_face = [0,0,0,0]
+        if len(faces) == 0 or abs(faces[0][2] - faces[0][2]) < 100:
+            print("No faces found in file1")
+            faces = face_cascade2.detectMultiScale(gray, 1.1, 4)
+            if len(faces) == 0:
+                print("No faces found in file2")
+                faces = face_cascade3.detectMultiScale(gray, 1.1, 4)
+                print(faces)
+                if len(faces) == 0:
+                    print("No faces found in file3")
+                    faces = face_cascade4.detectMultiScale(gray, 1.1, 4)
+
         for i, (x, y, w, h) in enumerate(faces):
-            if (biggest_face[2] - biggest_face[0]) < (w - x):
+            if abs(biggest_face[2] - biggest_face[0]) < abs(w - x):
                 biggest_face = [x, y, w, h]
-                
+        print(biggest_face)        
         [x,y,w,h] = biggest_face
         cv.rectangle(image, (x, y), (x + w, y + h), (255, 0, 0), 2)
         # Show image with face border
@@ -50,6 +67,7 @@ class InferenceModel():
         opencv_image, image_data = self.preprocess_image(req_body)
         prediction = self.model.predict(image_data)
         # print(prediction.tolist()[0][0], "Predict list")
+        print("Prediction is: ", prediction)
         predicted_age = int(prediction.tolist()[0][0])
         face_borders_and_age = self.face_border_detector( opencv_image )
         face_borders_and_age.append(predicted_age)
@@ -77,8 +95,9 @@ if __name__ == "__main__":
     # encoded_photo = json_ob["image"]
     
     # open image from local path and encode it
-    # image_path = "models/ex_images/100_1_2_20170112213615815.jpg"
-    image_path = "datasets/UTK_Images/part3/4_1_0_20170116215618294.jpg"
+    image_path = "models/ex_images/redhead_wp.jpeg"
+    # image_path = "datasets/UTK_Images/part3/4_1_0_20170116215618294.jpg"
+    # image_path = "C:/Users/sglbl/Downloads/Bill_Gates_-_Nov._8_2019.jpg"
     encoded_photo = model.encoder(image_path)
     
     
