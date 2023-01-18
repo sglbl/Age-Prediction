@@ -15,7 +15,7 @@ class ModelSelector extends StatefulWidget {
 class _SelectmodelState extends State<ModelSelector> {
   List<String> model_items = ['age_model_a', 'age_model_b', 'age_model_c'];
 
-  List<String> epoch_values = ['20', '500', '1000'];
+  List<String> epoch_values = ['20', '38'];
 
   String model_value = 'age_model_a';
   String epoch_value = '20';

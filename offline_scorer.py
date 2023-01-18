@@ -95,7 +95,7 @@ if __name__ == "__main__":
     # encoded_photo = json_ob["image"]
     
     # open image from local path and encode it
-    image_path = "models/ex_images/redhead_wp.jpeg"
+    image_path = "models/ex_images/gray.jpg"
     # image_path = "datasets/UTK_Images/part3/4_1_0_20170116215618294.jpg"
     # image_path = "C:/Users/sglbl/Downloads/Bill_Gates_-_Nov._8_2019.jpg"
     encoded_photo = model.encoder(image_path)
