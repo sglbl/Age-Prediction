@@ -12,8 +12,8 @@ import 'package:external_path/external_path.dart';
 // import 'package:ext_storage/ext_storage.dart';
 
 class ImageGetterWidget extends StatefulWidget {
-  late String model = 'age_model_a';
-  late String epoch = '20';
+  late String model = 'Model 1';
+  late String epoch = '500';
   // ImageGetterWidget(String model, String epoch) {
   //   this.model = model;
   //   this.epoch = epoch;
@@ -25,8 +25,8 @@ class ImageGetterWidget extends StatefulWidget {
 }
 
 class _ImageGetterState extends State<ImageGetterWidget> {
-  late String model = 'age_model_a';
-  late String epoch = '20';
+  late String model = 'Model 1';
+  late String epoch = '500';
 
   bool imageSelected = false;
   bool predictEnabled = false;
@@ -41,8 +41,8 @@ class _ImageGetterState extends State<ImageGetterWidget> {
 
   List<String> incomeResults = ['116.00', '208.01', '372.00, 372.00, 58.00'];
   List<int> incomeResultsInt = [100, 0, 0, 0, 10];
-  String secretKey = "ar8GMOw9QEqalK7cObur8Z1i100AZDk_9f8nhsQb4NdcAzFu2yvuLQ=="; // Secret key from Azure
-  // website: https://ageprediction.azurewebsites.net/api/HttpTrigger1?code=ar8GMOw9QEqalK7cObur8Z1i100AZDk_9f8nhsQb4NdcAzFu2yvuLQ==
+  String secretKey = "eYw6HywLbFXu4PBLDIVZsbKzdgKALxI1AvPuptiDtgQbAzFuRsMLCw=="; // Secret key from Azure
+  // website: https://agepredictor2.azurewebsites.net/api/HttpTrigger1?code=EoMowN0V-Ix-SOIX5Xlm83wdqSbQWQvFQTTAw9VMnkxIAzFuxD_v1w==
 
   _ImageGetterState(String model, String epoch) {
     this.model = model;
@@ -74,11 +74,11 @@ class _ImageGetterState extends State<ImageGetterWidget> {
                       imageWidth = image?.width;
                       imageHeight = image?.height;
 
-                      log("Image sizes2: h${Image.file(storedImageOnRoot, width: 400).height} w${Image.file(storedImageOnRoot, width: 400).width}");
+                      log("Image sizes2: ${Image.file(storedImageOnRoot, width: 400).height} ${Image.file(storedImageOnRoot, width: 400).width}");
 
                       final fileName = path.basename(storedImageOnRoot.path);
                       var extPath = await ExternalPath.getExternalStoragePublicDirectory(ExternalPath.DIRECTORY_DOWNLOADS);
-                      // await storedImageOnRoot.copy('$extPath/$fileName');
+                      await storedImageOnRoot.copy('$extPath/$fileName');
                       log("Root path $storedImageOnRoot \nExt Fath File: '$extPath/$fileName");
                       // log("Size width: ${storedImageOnRoot.width} height: ${storedImageOnRoot.height}"),
                       setState(() {
@@ -120,15 +120,14 @@ class _ImageGetterState extends State<ImageGetterWidget> {
                         waitingForResponse = true;
                       });
 
-                      String tempIncome = await trialPost(); // get response of model
+                      String tempIncome = await trialPost();
                       setState(() {
                         visibleAge = true;
                         waitingForResponse = false;
                       });
-
-                      log(tempIncome);
+                      log("Income is $tempIncome");
                       tempIncome = tempIncome.substring(14, tempIncome.length - 3);
-
+                      log(tempIncome);
                       incomeResults = tempIncome.split(', ');
                       for (int i = 0; i < incomeResults.length; i++) {
                         incomeResultsInt[i] = int.parse(incomeResults[i]);
@@ -174,65 +173,36 @@ class _ImageGetterState extends State<ImageGetterWidget> {
                     ? Container()
                     : Stack(
                         children: <Widget>[
-                          SizedBox(
-                            width: 350,
-                            // height: 350,
-                            child: Image.file(
-                              storedImageOnRoot,
-                              fit: BoxFit.fitHeight,
-                              height: 350,
-                            ),
-                          ),
+                          Image.file(storedImageOnRoot, width: 400, height: 400),
                           if (visibleAge) Positioned.fill(child: CustomPaint(painter: SquareDrawer(getRectAndAge()), child: Container()))
                         ],
                       )
-                // (gotImage == null)
-                //     ? Container()
-                //     : Stack(
-                //         children: [
-                //           //Image.file(storedImageOnRoot, width: 400, height: 400),
-                //           SizedBox(
-                //             width: 400,
-                //             height: 400,
-                //             child: Image.file(storedImageOnRoot),
-                //           ),
-                //           if (visibleAge)
-                //             SizedBox(
-                //                 width: 400,
-                //                 height: 400,
-                //                 child: Positioned.fill(child: CustomPaint(painter: SquareDrawer(getRectAndAge()), child: Container()))),
-                //         ],
-                //       )
               ],
             )));
   }
 
   Future<String> convertFileToImage(File picture) async {
-    File picture = await FlutterNativeImage.compressImage(storedImageOnRoot.path, quality: 30, percentage: 100);
-    List<int> imageBytes = picture.readAsBytesSync();
+    File compressedPicture = await FlutterNativeImage.compressImage(storedImageOnRoot.path, quality: 50, percentage: 80);
+    List<int> imageBytes = compressedPicture.readAsBytesSync();
+    // List<int> imageBytes = picture.readAsBytesSync();
+    // String base64Image = base64.encode(imageBytes);
 
     String base64Image = base64.encode(imageBytes);
     return base64Image;
   }
 
   Future<String> trialPost() async {
-    if (model == "age_model_c") model = "age_model_c/weights.18-4.06_v2.hdf5";
+    //"model": "models/age_model_a_50"
+    //50: epoch value
+
     // convert image to json using base64 encoding
     var imageJson = await convertFileToImage(storedImageOnRoot);
     var jsonCode = {"model_path": modelsPath + model, "image": imageJson};
+    // log("First 100 char of json: ${jsonEncode(jsonCode).substring(0, 100)}");
     var body = jsonEncode(jsonCode);
 
-    // var response = await http.post(Uri.parse("http://192.168.43.136:7072/api/HttpTrigger1"),
-    //     body: body,
-    //     headers: {"x-functions-key": secretKey});
-    http.Response response;
-    if (model == "age_model_c/weights.18-4.06_v2.hdf5") {
-      response =
-          await http.post(Uri.https('ageprediction.azurewebsites.net', '/api/HttpTrigger2'), body: body, headers: {"x-functions-key": secretKey});
-    } else {
-      response =
-          await http.post(Uri.https('ageprediction.azurewebsites.net', '/api/HttpTrigger1'), body: body, headers: {"x-functions-key": secretKey});
-    }
+    var response =
+        await http.post(Uri.https('agepredictorwin2.azurewebsites.net', '/api/HttpTrigger1'), body: body, headers: {"x-functions-key": secretKey});
 
     log("Response from model: ${response.body}");
     return response.body.toString();
@@ -240,31 +210,13 @@ class _ImageGetterState extends State<ImageGetterWidget> {
 
   Tuple2<Rect, int> getRectAndAge() {
     // const drawInfo = Tuple2<Rect, int>(Rect.fromLTWH(80.0, 80.0, 115.0, 130.0), 7);
-    var widthRatio = 350 / imageWidth;
-    var ratio = 350 / imageHeight;
-    var widthHeightRatio = imageWidth / imageHeight;
-    var heightWidthRatio = imageHeight / imageWidth;
     log("Width: $imageWidth, Height: $imageHeight");
+    double x = incomeResultsInt[0] * 400 / imageWidth;
+    double y = incomeResultsInt[1] * 400 / imageHeight;
+    double w = incomeResultsInt[2] * 400 / imageWidth;
+    double h = incomeResultsInt[3] * 400 / imageHeight;
 
-    // double x = incomeResultsInt[0] * ratio * widthHeightRatio;
-    double y = incomeResultsInt[1] * ratio;
-    double x, w;
-    if (imageHeight > imageWidth) {
-      x = incomeResultsInt[0] * widthRatio;
-      w = incomeResultsInt[2] * ratio;
-    } else {
-      x = incomeResultsInt[0] * ratio * heightWidthRatio;
-      w = incomeResultsInt[2] * widthRatio;
-    }
-    // double w = incomeResultsInt[2] * ratio * widthHeightRatio;
-    double h = incomeResultsInt[3] * ratio;
-
-    // double x = incomeResultsInt[0] * 3 / 10;
-    // double y = incomeResultsInt[1] * 3 / 10;
-    // double w = incomeResultsInt[2] * 3 / 10;
-    // double h = incomeResultsInt[3] * 3 / 10;
-
-    var drawInfo = Tuple2<Rect, int>(Rect.fromLTWH(x, y, w, h), incomeResultsInt[4]);
+    var drawInfo = Tuple2<Rect, int>(Rect.fromLTWH(x, y, w - x, h), incomeResultsInt[4]);
 
     return drawInfo;
   }
