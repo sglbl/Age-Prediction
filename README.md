@@ -10,4 +10,4 @@ Project uses Microsoft Azure and CI/CD pipeline tools of GitHub Actions to autom
 [Repository for the Automated ML Deployment](https://github.com/sglbl/Automated-ML-Deployment)
 
 ## Details
-[Report file](https://github.com/sglbl/Age-Prediction/blob/main/report_and_presentations/1801042656_Report.pdf) includes details about the project.
+[Report file](https://sglbl.github.io/Age-Prediction/report_and_presentations/1801042656_Report.pdf) includes details about the project.
